@@ -9,12 +9,13 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <TextBox x:Name="SearchBox" Grid.Row="0" Height="25" Margin="0,0,0,5"  />
-        <ListBox x:Name="ResultList" Grid.Row="1" Margin="0,0,0,5"/>
+        <TextBox x:Name="SearchBox" Grid.Row="1" Margin="0,33,0,228"  />
+        <ListBox x:Name="ResultList" Grid.Row="1" Margin="0,66,0,5"/>
         <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,0,0,5">
             <Label Content="Ticketnummer:" VerticalAlignment="Center"/>
             <TextBox x:Name="TicketNumberBox" Width="150" Margin="5,0,0,0"/>
         </StackPanel>
-        <Button x:Name="ConfigButton" Grid.Row="3" Content="Konfiguration" Width="120" HorizontalAlignment="Right"/>
+        <Button x:Name="ConfigButton" Grid.Row="3" Content="Konfiguration" Width="120" HorizontalAlignment="Right" Click="ConfigButton_Click"/>
+        <Button x:Name="TestButton" Content="Test" Width="200" Height="30" Click="TestButton_Click" />
     </Grid>
 </UserControl>

@@ -1,7 +1,8 @@
 using System;
 using System.Runtime.InteropServices;
 using Office = Microsoft.Office.Core;
-using System.Windows; // Added for WPF support
+using System.Windows;
+using Outlook = Microsoft.Office.Interop.Outlook;
 
 namespace Mail2Ticket
 {
@@ -17,19 +18,34 @@ namespace Mail2Ticket
 
         public void OnMail2TicketClicked(Office.IRibbonControl control)
         {
-           // System.Windows.Forms.MessageBox.Show("Mail2Ticket wurde geklickt!");
-            // Hier kann die eigentliche Logik zum Erstellen eines Tickets implementiert werden.
+            var dialog = new ticketDialog();
+            // Aktuell ausgewählte Mail holen
+            Outlook.Application app = Globals.ThisAddIn.Application;
+            Outlook.Selection selection = app.ActiveExplorer().Selection;
+            string sender = "Unbekannt";
+            if (selection.Count > 0 && selection[1] is Outlook.MailItem mail)
+            {
+                sender = mail.SenderName + " <" + mail.SenderEmailAddress + ">";
+                //var dialog = new ticketDialog();
+                dialog.SetSenderAndMail(sender, mail);
+            }
+            else
+            {
+               // var dialog = new ticketDialog();
+                dialog.SetSenderAndMail(sender, null);
+            }
 
-            // Beispiel: Formular anzeigen (WPF)
             var window = new Window
             {
                 Title = "Ticket erstellen",
-                Content = new ticketDialog(),
+                Content = dialog,
                 Width = 600,
                 Height = 400,
-                WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen
+                WindowStartupLocation = WindowStartupLocation.CenterScreen
             };
             window.ShowDialog();
         }
+
+
     }
 }
