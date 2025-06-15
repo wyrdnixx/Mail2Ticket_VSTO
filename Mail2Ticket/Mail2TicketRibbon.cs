@@ -25,25 +25,27 @@ namespace Mail2Ticket
             string sender = "Unbekannt";
             if (selection.Count > 0 && selection[1] is Outlook.MailItem mail)
             {
-                sender = mail.SenderName + " <" + mail.SenderEmailAddress + ">";
+                //sender = mail.SenderName + " <" + mail.SenderEmailAddress + ">";
+                string emailSuject = mail.Subject;
                 //var dialog = new ticketDialog();
-                dialog.SetSenderAndMail(sender, mail);
+                dialog.SetMailKontext(mail);
+                //dialog.SetEmailSubjectTextbox(emailSuject);
+
+                var window = new Window
+                {
+                    Title = "Ticket erstellen",
+                    Content = dialog,
+                    Width = 600,
+                    Height = 400,
+                    WindowStartupLocation = WindowStartupLocation.CenterScreen
+                };
+                window.ShowDialog();
             }
             else
             {
-               // var dialog = new ticketDialog();
-                dialog.SetSenderAndMail(sender, null);
+               MessageBox.Show("Bitte wählen Sie eine E-Mail aus, um ein Ticket zu erstellen.", "Keine E-Mail ausgewählt", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
 
-            var window = new Window
-            {
-                Title = "Ticket erstellen",
-                Content = dialog,
-                Width = 600,
-                Height = 400,
-                WindowStartupLocation = WindowStartupLocation.CenterScreen
-            };
-            window.ShowDialog();
         }
 
 

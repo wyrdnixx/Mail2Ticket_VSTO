@@ -15,16 +15,26 @@ namespace Mail2Ticket
         public ticketDialog()
         {
             InitializeComponent();
+
+            
         }
 
         // Übergibt das MailItem-Objekt und setzt den Button-Text
-        public void SetSenderAndMail(string sender, Outlook.MailItem mailItem)
+        public void SetMailKontext( Outlook.MailItem mailItem)
         {
-            TestButton.Content = sender;
+            
             _mailItem = mailItem;
+            tbEmailSubject.Text = _mailItem.Subject.ToString();
         }
 
-        private void TestButton_Click(object sender, RoutedEventArgs e)
+       
+
+        private void ConfigButton_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Konfigurationsbutton wurde geklickt!");
+        }
+
+        private void btnSend2Ticket_Click(object sender, RoutedEventArgs e)
         {
             if (_mailItem != null)
             {
@@ -32,10 +42,20 @@ namespace Mail2Ticket
                 {
                     // Kopie der Mail erstellen
                     Outlook.MailItem copy = (Outlook.MailItem)_mailItem.Copy();
+                    
+                    //  Ticketnummer aus TextBox verwenden, falls vorhanden
+                    copy.Subject = "[MCB#" + tbTicketNumber.Text + "] " + tbEmailSubject.Text; // Optional: Betreff anpassen
+
                     // In den Entwürfe-Ordner verschieben
                     Outlook.MAPIFolder drafts = _mailItem.Application.Session.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderDrafts);
                     copy.Move(drafts);
-                    MessageBox.Show("Kopie der E-Mail wurde im Ordner 'Entwürfe' erstellt.");
+
+                    
+
+                    //MessageBox.Show("Kopie der E-Mail wurde im Ordner 'Entwürfe' erstellt.");
+                    // Optional: Dialog schließen oder weitere Aktionen durchführen 
+                    Window.GetWindow(this)?.Close();
+
                 }
                 catch (Exception ex)
                 {
@@ -46,11 +66,6 @@ namespace Mail2Ticket
             {
                 MessageBox.Show("Kein MailItem übergeben.");
             }
-        }
-
-        private void ConfigButton_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("Konfigurationsbutton wurde geklickt!");
         }
     }
 }
