@@ -1,6 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 using Office = Microsoft.Office.Core;
+using System.Windows; // Added for WPF support
 
 namespace Mail2Ticket
 {
@@ -16,8 +17,19 @@ namespace Mail2Ticket
 
         public void OnMail2TicketClicked(Office.IRibbonControl control)
         {
-            System.Windows.Forms.MessageBox.Show("Mail2Ticket wurde geklickt!");
+           // System.Windows.Forms.MessageBox.Show("Mail2Ticket wurde geklickt!");
             // Hier kann die eigentliche Logik zum Erstellen eines Tickets implementiert werden.
+
+            // Beispiel: Formular anzeigen (WPF)
+            var window = new Window
+            {
+                Title = "Ticket erstellen",
+                Content = new ticketDialog(),
+                Width = 600,
+                Height = 400,
+                WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen
+            };
+            window.ShowDialog();
         }
     }
 }
