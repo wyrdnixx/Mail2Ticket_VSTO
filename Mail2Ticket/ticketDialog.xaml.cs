@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using Outlook = Microsoft.Office.Interop.Outlook;
+using Mail2Ticket;
 
 namespace Mail2Ticket
 {
@@ -11,12 +12,13 @@ namespace Mail2Ticket
     public partial class ticketDialog : UserControl
     {
         private Outlook.MailItem _mailItem;
+        private TicketSearch _ticketSearch;
 
         public ticketDialog()
         {
             InitializeComponent();
 
-            
+            _ticketSearch = new TicketSearch();
         }
 
         // Übergibt das MailItem-Objekt und setzt den Button-Text
@@ -25,6 +27,9 @@ namespace Mail2Ticket
             
             _mailItem = mailItem;
             tbEmailSubject.Text = _mailItem.Subject.ToString();
+
+
+            
         }
 
        

@@ -46,6 +46,8 @@ namespace Mail2Ticket
                MessageBox.Show("Bitte wählen Sie eine E-Mail aus, um ein Ticket zu erstellen.", "Keine E-Mail ausgewählt", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
 
+
+
         }
 
 
