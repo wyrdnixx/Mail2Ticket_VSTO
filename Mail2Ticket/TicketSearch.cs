@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
-using System.Threading.Tasks;
+using System.Text;
 using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace Mail2Ticket
 {
-    public class TicketSearch
+    internal class TicketSearch
     {
+
         public partial class TicketSuggestion
         {
             public string tn { get; set; }

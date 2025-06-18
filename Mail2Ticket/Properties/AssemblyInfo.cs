@@ -21,7 +21,7 @@ using System.Security;
 [assembly: ComVisible(false)]
 
 // Die folgende GUID bestimmt die ID der Typbibliothek, wenn dieses Projekt für COM verfügbar gemacht wird
-[assembly: Guid("1d5ab05e-c2e6-4b80-9d8d-e23d9e9e3d48")]
+[assembly: Guid("245883df-5f47-4533-bf7c-8d49ad97092d")]
 
 // Versionsinformationen für eine Assembly bestehen aus den folgenden vier Werten:
 //

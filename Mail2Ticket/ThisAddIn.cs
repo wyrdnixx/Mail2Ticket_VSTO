@@ -35,7 +35,6 @@ namespace Mail2Ticket
         {
             return new Mail2TicketRibbon();
         }
-        
         #endregion
     }
 }
