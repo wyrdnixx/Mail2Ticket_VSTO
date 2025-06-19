@@ -39,9 +39,11 @@ namespace Mail2Ticket
                 {
                     Title = "Ticket erstellen",
                     Content = dialog,
-                    Width = 1000,
+                    Width = 1050,
                     Height = 650,
-                    WindowStartupLocation = WindowStartupLocation.CenterScreen
+                    WindowStartupLocation = WindowStartupLocation.CenterScreen,
+                    ResizeMode = ResizeMode.NoResize,
+
                 };
                 window.ShowDialog();
             }

@@ -75,5 +75,23 @@ namespace Mail2Ticket
                 MessageBox.Show("Kein MailItem übergeben.");
             }
         }
+
+        public void setStatusText(string statusText)
+        {
+            tbStatusText.Text = statusText;
+        }
+
+        private void tbSearchString_TextChanged(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter && tbSearchString.Text.Length > 2)
+            {
+
+                //MessageBox.Show(    "Suche nach: " + tbSearchString.Text);
+                // Hier können Sie die Logik zur Suche von Tickets basierend auf dem Suchbegriff implementieren
+                // Zum Beispiel: Verbindung zu einer Datenbank herstellen, um Tickets zu suchen
+                // oder eine API aufzurufen, um Tickets abzurufen.
+                _ticketSearch.SearchTickets(tbSearchString.Text, this);
+            }
+        }
     }
 }
