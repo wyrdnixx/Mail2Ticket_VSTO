@@ -15,7 +15,7 @@
         <Label Content="Suche:" HorizontalAlignment="Left" Margin="10,47,0,0" VerticalAlignment="Top"/>
         <TextBox x:Name="tbSearchString" HorizontalAlignment="Left" Margin="102,51,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="444" KeyDown="tbSearchString_TextChanged" />
         <Label x:Name="lblStatusText" Content="Status:" HorizontalAlignment="Left" Margin="566,47,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="tbStatusText" HorizontalAlignment="Left" Margin="616,51,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="374" Height="62" IsReadOnly="True" />
+        <TextBox x:Name="tbStatusText" HorizontalAlignment="Left" Margin="616,51,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="374" Height="62" VerticalScrollBarVisibility="Auto" IsReadOnly="True" />
 
     </Grid>
 </UserControl>

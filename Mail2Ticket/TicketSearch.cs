@@ -47,7 +47,7 @@ namespace Mail2Ticket
                 foreach (var suggestion in suggestions)
                 {
                     Console.WriteLine($"Ticket: {suggestion.tn}, Title: {suggestion.title}, Name: {suggestion.name}");
-                    dialog.setStatusText($"Ticket: {suggestion.tn}, Title: {suggestion.title}, Name: {suggestion.name}");
+                    dialog.setStatusText( $"Ticket: {suggestion.tn}, Title: {suggestion.title}, Name: {suggestion.name}");
                 }
             }
             catch (Exception ex)

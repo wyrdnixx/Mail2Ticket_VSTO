@@ -78,7 +78,7 @@ namespace Mail2Ticket
 
         public void setStatusText(string statusText)
         {
-            tbStatusText.Text = statusText;
+            tbStatusText.Text += Environment.NewLine + statusText;
         }
 
         private void tbSearchString_TextChanged(object sender, KeyEventArgs e)
