@@ -16,6 +16,27 @@
         <TextBox x:Name="tbSearchString" HorizontalAlignment="Left" Margin="102,51,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="444" KeyDown="tbSearchString_TextChanged" />
         <Label x:Name="lblStatusText" Content="Status:" HorizontalAlignment="Left" Margin="566,47,0,0" VerticalAlignment="Top"/>
         <TextBox x:Name="tbStatusText" HorizontalAlignment="Left" Margin="616,51,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="374" Height="62" VerticalScrollBarVisibility="Auto" IsReadOnly="True" />
+        <Grid>
+            <DataGrid x:Name="SuggestionsDataGrid" AutoGenerateColumns="False" Margin="105,124,10,131"
+                  SelectionMode="Single" IsReadOnly="True"           SelectionChanged="SuggestionsDataGrid_SelectionChanged"
+>
+                <DataGrid.Columns>
+                    <!-- Selectable TN field (as Button or TextBox) -->
+                    <DataGridTextColumn Header="Name" Binding="{Binding name}" />
+                    <DataGridTemplateColumn Header="TN">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBox Text="{Binding tn}" IsReadOnly="True" Cursor="IBeam" BorderThickness="0"
+                                     Background="Transparent" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
 
+                    <!-- Other fields -->
+                    <DataGridTextColumn Header="Title" Binding="{Binding title}" />
+                    
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
     </Grid>
 </UserControl>

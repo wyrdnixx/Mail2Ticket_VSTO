@@ -29,6 +29,8 @@ namespace Mail2Ticket
             // Implementieren Sie hier die Logik zur Suche von Tickets basierend auf dem Suchbegriff
             // Dies könnte eine Datenbankabfrage oder eine API-Anfrage sein.
 
+            //dialog.setStatusText($"searching tickets...");
+
             string query = "test";
             string email = "jojo@ulewu.de";
             string url = $"http://localhost:8080/api/tickets/suggestions?q={Uri.EscapeDataString(query)}&mail={Uri.EscapeDataString(email)}";
@@ -47,8 +49,9 @@ namespace Mail2Ticket
                 foreach (var suggestion in suggestions)
                 {
                     Console.WriteLine($"Ticket: {suggestion.tn}, Title: {suggestion.title}, Name: {suggestion.name}");
-                    dialog.setStatusText( $"Ticket: {suggestion.tn}, Title: {suggestion.title}, Name: {suggestion.name}");
+                   
                 }
+                dialog.UpdateTicketSearchResults(suggestions);
             }
             catch (Exception ex)
             {

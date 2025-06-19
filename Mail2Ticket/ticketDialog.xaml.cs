@@ -38,9 +38,35 @@ namespace Mail2Ticket
             tbEmailSubject.Text = _mailItem.Subject.ToString();
             _ticketSearch = new TicketSearch();
 
+            // auto search on initialization
+            //_ticketSearch.SearchTickets(tbSearchString.Text, this);
+
+
         }
 
+        internal void UpdateTicketSearchResults( List<TicketSearch.TicketSuggestion> suggestions)
+        {
+            SuggestionsDataGrid.Items.Clear();
+            
+            foreach (var suggestion in suggestions)
+            {
+             //   SuggestionsDataGrid.Items.Add(suggestion.tn + " - " + suggestion.title + " (" + suggestion.name + ")");
+            }
+            SuggestionsDataGrid.ItemsSource = suggestions;
 
+        }
+
+        private void SuggestionsDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+            if (SuggestionsDataGrid.SelectedItem is TicketSearch.TicketSuggestion selected)
+            {
+                
+                //MessageBox.Show("Ausgewähltes Ticket: " + selected.tn);
+                tbTicketNumber.Text = selected.tn; // Setzt die Ticketnummer in die TextBox
+            }
+            
+        }
 
         private void btnMail2Ticket_Click(object sender, RoutedEventArgs e)
         {
@@ -78,7 +104,7 @@ namespace Mail2Ticket
 
         public void setStatusText(string statusText)
         {
-            tbStatusText.Text += Environment.NewLine + statusText;
+           // tbStatusText.Text += Environment.NewLine + statusText;
         }
 
         private void tbSearchString_TextChanged(object sender, KeyEventArgs e)
