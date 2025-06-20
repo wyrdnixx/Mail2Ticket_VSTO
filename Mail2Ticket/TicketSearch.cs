@@ -13,9 +13,10 @@ namespace Mail2Ticket
 
         public partial class TicketSuggestion
         {
+            public string type { get; set; }
             public string tn { get; set; }
             public string title { get; set; }
-            public string name { get; set; }
+            
         }
         public TicketSearch()
         {
@@ -30,6 +31,8 @@ namespace Mail2Ticket
             // Dies könnte eine Datenbankabfrage oder eine API-Anfrage sein.
 
             //dialog.setStatusText($"searching tickets...");
+
+            dialog.setStatusText("Suche...");
 
             string query = "test";
             string email = "jojo@ulewu.de";
@@ -48,7 +51,7 @@ namespace Mail2Ticket
                 // Print results
                 foreach (var suggestion in suggestions)
                 {
-                    Console.WriteLine($"Ticket: {suggestion.tn}, Title: {suggestion.title}, Name: {suggestion.name}");
+                    Console.WriteLine($"Ticket: {suggestion.tn}, Title: {suggestion.title}, Name: {suggestion.type}");
                    
                 }
                 dialog.UpdateTicketSearchResults(suggestions);

@@ -5,7 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Mail2Ticket"
              mc:Ignorable="d" 
-             d:DesignHeight="650" d:DesignWidth="1000">
+             d:DesignHeight="650" d:DesignWidth="1000"
+             Loaded="UserControl_Loaded">
     <Grid >
         <Label Content="Betreff" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
         <TextBox x:Name="tbEmailSubject" HorizontalAlignment="Left" Margin="102,14,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="888"/>
@@ -22,7 +23,7 @@
 >
                 <DataGrid.Columns>
                     <!-- Selectable TN field (as Button or TextBox) -->
-                    <DataGridTextColumn Header="Name" Binding="{Binding name}" />
+                    <DataGridTextColumn Header="Type" Binding="{Binding type}" />
                     <DataGridTemplateColumn Header="TN">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
@@ -31,9 +32,7 @@
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-
-                    <!-- Other fields -->
-                    <DataGridTextColumn Header="Title" Binding="{Binding title}" />
+                    <DataGridTextColumn Header="Title" Binding="{Binding title}" Width="*"  />
                     
                 </DataGrid.Columns>
             </DataGrid>

@@ -36,10 +36,8 @@ namespace Mail2Ticket
 
             _mailItem = mailItem;
             tbEmailSubject.Text = _mailItem.Subject.ToString();
+            tbSearchString.Text = _mailItem.SenderEmailAddress;
             _ticketSearch = new TicketSearch();
-
-            // auto search on initialization
-            //_ticketSearch.SearchTickets(tbSearchString.Text, this);
 
 
         }
@@ -107,6 +105,15 @@ namespace Mail2Ticket
            // tbStatusText.Text += Environment.NewLine + statusText;
         }
 
+        // auto search on initialization
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (_mailItem != null && _ticketSearch != null)
+            {
+                // You can customize this initial search string
+                _ticketSearch.SearchTickets(tbSearchString.Text, this);
+            }
+        }
         private void tbSearchString_TextChanged(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter && tbSearchString.Text.Length > 2)
