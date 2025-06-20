@@ -22,7 +22,7 @@
 >
                 <DataGrid.Columns>
                     <!-- Selectable TN field (as Button or TextBox) -->
-                    <DataGridTextColumn Header="Name" Binding="{Binding name}" />
+                    <DataGridTextColumn Header="Type" Binding="{Binding type}" />
                     <DataGridTemplateColumn Header="TN">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
@@ -31,9 +31,7 @@
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-
-                    <!-- Other fields -->
-                    <DataGridTextColumn Header="Title" Binding="{Binding title}" />
+                    <DataGridTextColumn Header="Title" Binding="{Binding title}" Width="*"  />
                     
                 </DataGrid.Columns>
             </DataGrid>
