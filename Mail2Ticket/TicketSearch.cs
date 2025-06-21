@@ -25,7 +25,7 @@ namespace Mail2Ticket
             // oder eine API aufzurufen, um Tickets abzurufen.
         }
         // Beispielmethode zum Suchen von Tickets
-        public async void  SearchTickets(string searchTerm, TicketDialog dialog)
+        public async void  SearchTickets(string _searchTerm, string _SenderEmailAddress, TicketDialog dialog)
         {
             // Implementieren Sie hier die Logik zur Suche von Tickets basierend auf dem Suchbegriff
             // Dies könnte eine Datenbankabfrage oder eine API-Anfrage sein.
@@ -34,8 +34,8 @@ namespace Mail2Ticket
 
             dialog.setStatusText("Suche...");
 
-            string query = "test";
-            string email = "jojo@ulewu.de";
+            string query = _searchTerm;
+            string email = _SenderEmailAddress;
             string url = $"http://localhost:8080/api/tickets/suggestions?q={Uri.EscapeDataString(query)}&mail={Uri.EscapeDataString(email)}";
 
             HttpClient client = new HttpClient();
@@ -48,13 +48,22 @@ namespace Mail2Ticket
                 string json = await response.Content.ReadAsStringAsync();
                 List<TicketSuggestion> suggestions = JsonSerializer.Deserialize<List<TicketSuggestion>>(json);
 
-                // Print results
-                foreach (var suggestion in suggestions)
+                // Print results if found
+                if (suggestions == null || suggestions.Count == 0)
                 {
-                    Console.WriteLine($"Ticket: {suggestion.tn}, Title: {suggestion.title}, Name: {suggestion.type}");
-                   
+                    dialog.setStatusText("Keine Tickets gefunden.");
+                    Console.WriteLine("Keine Tickets gefunden.");
+                    return;
+                } else
+                {
+                    foreach (var suggestion in suggestions)
+                    {
+                        Console.WriteLine($"Ticket: {suggestion.tn}, Title: {suggestion.title}, Name: {suggestion.type}");
+
+                    }
+                    dialog.UpdateTicketSearchResults(suggestions);
                 }
-                dialog.UpdateTicketSearchResults(suggestions);
+                    
             }
             catch (Exception ex)
             {

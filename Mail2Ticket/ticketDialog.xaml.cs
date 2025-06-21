@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Xml.Linq;
 using Outlook = Microsoft.Office.Interop.Outlook;
 
 namespace Mail2Ticket
@@ -51,6 +52,9 @@ namespace Mail2Ticket
              //   SuggestionsDataGrid.Items.Add(suggestion.tn + " - " + suggestion.title + " (" + suggestion.name + ")");
             }
             SuggestionsDataGrid.ItemsSource = suggestions;
+
+            // ToDO: Bug beim zweiten Suchen:
+            // Der Vorgang ist während der Verwendung von "ItemsSource" ungültig.Verwenden Sie stattdessen "ItemsControl.ItemsSource", um auf Elemente zuzugreifen und diese zu ändern.
 
         }
 
@@ -102,7 +106,7 @@ namespace Mail2Ticket
 
         public void setStatusText(string statusText)
         {
-           // tbStatusText.Text += Environment.NewLine + statusText;
+            tbStatusText.Text += Environment.NewLine + statusText;
         }
 
         // auto search on initialization
@@ -111,19 +115,21 @@ namespace Mail2Ticket
             if (_mailItem != null && _ticketSearch != null)
             {
                 // You can customize this initial search string
-                _ticketSearch.SearchTickets(tbSearchString.Text, this);
+                _ticketSearch.SearchTickets(tbSearchString.Text, _mailItem.SenderEmailAddress, this);
             }
         }
         private void tbSearchString_TextChanged(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter && tbSearchString.Text.Length > 2)
             {
+                
+                MessageBox.Show(    "Suche nach: " + tbSearchString.Text);
 
-                //MessageBox.Show(    "Suche nach: " + tbSearchString.Text);
+
                 // Hier können Sie die Logik zur Suche von Tickets basierend auf dem Suchbegriff implementieren
                 // Zum Beispiel: Verbindung zu einer Datenbank herstellen, um Tickets zu suchen
                 // oder eine API aufzurufen, um Tickets abzurufen.
-                _ticketSearch.SearchTickets(tbSearchString.Text, this);
+                _ticketSearch.SearchTickets(tbSearchString.Text,_mailItem.SenderEmailAddress, this);
             }
         }
     }
