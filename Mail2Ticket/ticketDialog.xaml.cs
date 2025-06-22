@@ -229,6 +229,15 @@ namespace Mail2Ticket
             {
                 MessageBox.Show("Fehler beim Öffnen des Dialogs: " + ex.Message);
             }
+
+            // Bring addin window to front
+            Window parentWindow = Window.GetWindow(this);
+            if (parentWindow != null)
+            {
+                parentWindow.Topmost = true;     // Make topmost temporarily
+                parentWindow.Activate();         // Bring to foreground
+                parentWindow.Topmost = false;    // Revert so it behaves normally again
+            }
         }
     }
 }
