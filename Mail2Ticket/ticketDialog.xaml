@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Mail2Ticket"
              mc:Ignorable="d" 
-             d:DesignHeight="650" d:DesignWidth="1000"
+             d:DesignHeight="700" d:DesignWidth="1000"
              Loaded="UserControl_Loaded">
     <Grid >
         <Label Content="Betreff" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
@@ -19,9 +19,9 @@
         <TextBox x:Name="tbStatusText" HorizontalAlignment="Left" Margin="616,37,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="374" Height="85" VerticalScrollBarVisibility="Auto" IsReadOnly="True"  />
 
         <Button x:Name="btnConfig" Content="Config" HorizontalAlignment="Left" Margin="901,577,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.287,0.017" Width="89" Click="btnConfig_Click"/>
-        <Grid Margin="10,122,10,109">
+        <Grid Margin="10,122,10,155">
             <DataGrid x:Name="SuggestionsDataGrid" AutoGenerateColumns="False" Margin="10,0,10,0"
-                  SelectionMode="Single" IsReadOnly="True"           SelectionChanged="SuggestionsDataGrid_SelectionChanged" Height="383" VerticalAlignment="Center"
+                  SelectionMode="Single" IsReadOnly="True"           SelectionChanged="SuggestionsDataGrid_SelectionChanged" Height="382" VerticalAlignment="Center"
 >
                 <DataGrid.Columns>
                     <!-- Selectable TN field (as Button or TextBox) -->
@@ -40,6 +40,8 @@
             </DataGrid>
         </Grid>
         <Label x:Name="lblDestinationFolder" Content="Zielordner: " HorizontalAlignment="Left" Margin="670,569,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="lblSearchServern" Content="Suchserver: " HorizontalAlignment="Left" Margin="670,600,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="tbSearchServer" HorizontalAlignment="Left" Margin="738,604,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="252" KeyDown="tbSearchServer_TextChanged"/>
     </Grid>
 
 

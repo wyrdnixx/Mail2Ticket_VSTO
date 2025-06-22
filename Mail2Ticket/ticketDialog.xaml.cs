@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -15,6 +16,7 @@ using System.Windows.Shapes;
 using System.Xml.Linq;
 using Microsoft.Office.Interop.Outlook;
 using Exception = System.Exception;
+using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using Outlook = Microsoft.Office.Interop.Outlook;
 
 namespace Mail2Ticket
@@ -28,6 +30,7 @@ namespace Mail2Ticket
         private Outlook.MailItem _mailItem;
         private TicketSearch _ticketSearch;
         private Outlook.MAPIFolder _selectedFolder;
+        
 
 
         public TicketDialog()
@@ -36,7 +39,7 @@ namespace Mail2Ticket
         }
 
         // Übergibt das MailItem-Objekt und setzt den Button-Text
-        public void SetMailKontext(Outlook.MailItem mailItem)
+        public void StartMail2Ticket(Outlook.MailItem mailItem)
         {
 
             _mailItem = mailItem;
@@ -45,7 +48,8 @@ namespace Mail2Ticket
             _ticketSearch = new TicketSearch();
             loadDestinationFolder();
 
-
+            //Properties.Settings.Default.SearchServer = "localhost:8080";
+            tbSearchServer.Text = Properties.Settings.Default.SearchServer;
 
         }
 
@@ -176,7 +180,7 @@ namespace Mail2Ticket
             if (_mailItem != null && _ticketSearch != null)
             {
                 // You can customize this initial search string
-                _ticketSearch.SearchTickets(tbSearchString.Text, _mailItem.SenderEmailAddress, this);
+                _ticketSearch.SearchTickets(Properties.Settings.Default.SearchServer, tbSearchString.Text, _mailItem.SenderEmailAddress, this);
             }
         }
         private void tbSearchString_TextChanged(object sender, KeyEventArgs e)
@@ -190,10 +194,36 @@ namespace Mail2Ticket
                 // Hier können Sie die Logik zur Suche von Tickets basierend auf dem Suchbegriff implementieren
                 // Zum Beispiel: Verbindung zu einer Datenbank herstellen, um Tickets zu suchen
                 // oder eine API aufzurufen, um Tickets abzurufen.
-                _ticketSearch.SearchTickets(tbSearchString.Text,_mailItem.SenderEmailAddress, this);
+                _ticketSearch.SearchTickets(Properties.Settings.Default.SearchServer, tbSearchString.Text,_mailItem.SenderEmailAddress, this);
             }
         }
 
+                private void tbSearchServer_TextChanged(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter && tbSearchString.Text.Length > 2)
+            {
+                MessageBoxResult result = MessageBox.Show(
+      "Do you want to save the settings?",    // Message text
+      "Save Settings",                        // Title
+      MessageBoxButton.YesNo,                 // Buttons
+      MessageBoxImage.Question                // Icon
+  );
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    // User chose Yes
+                    // Save settings here
+                    Properties.Settings.Default.SearchServer = tbSearchServer.Text;
+                    Properties.Settings.Default.Save();
+
+                }
+                else
+                {
+                    // User chose No
+                    tbSearchServer.Text = Properties.Settings.Default.SearchServer; // Revert to last saved value
+                }
+            }
+        }
         private void btnConfig_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -239,5 +269,7 @@ namespace Mail2Ticket
                 parentWindow.Topmost = false;    // Revert so it behaves normally again
             }
         }
+
+      
     }
 }

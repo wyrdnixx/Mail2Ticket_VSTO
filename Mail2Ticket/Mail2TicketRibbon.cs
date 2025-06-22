@@ -26,13 +26,13 @@ namespace Mail2Ticket
             // Aktuell ausgewählte Mail holen
             Outlook.Application app = Globals.ThisAddIn.Application;
             Outlook.Selection selection = app.ActiveExplorer().Selection;
-            string sender = "Unbekannt";
+            
             if (selection.Count > 0 && selection[1] is Outlook.MailItem mail)
             {
                 //sender = mail.SenderName + " <" + mail.SenderEmailAddress + ">";
                 string emailSuject = mail.Subject;
                 
-                dialog.SetMailKontext(mail);
+                dialog.StartMail2Ticket(mail);
                
 
                 var window = new Window
@@ -40,7 +40,7 @@ namespace Mail2Ticket
                     Title = "Ticket erstellen",
                     Content = dialog,
                     Width = 1050,
-                    Height = 650,
+                    Height = 700,
                     WindowStartupLocation = WindowStartupLocation.CenterScreen,
                     ResizeMode = ResizeMode.NoResize,
 

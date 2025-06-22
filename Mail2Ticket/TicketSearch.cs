@@ -25,7 +25,7 @@ namespace Mail2Ticket
             // oder eine API aufzurufen, um Tickets abzurufen.
         }
         // Beispielmethode zum Suchen von Tickets
-        public async void  SearchTickets(string _searchTerm, string _SenderEmailAddress, TicketDialog dialog)
+        public async void  SearchTickets(string _SearchServer, string _searchTerm, string _SenderEmailAddress, TicketDialog dialog)
         {
             // Implementieren Sie hier die Logik zur Suche von Tickets basierend auf dem Suchbegriff
             // Dies könnte eine Datenbankabfrage oder eine API-Anfrage sein.
@@ -36,7 +36,8 @@ namespace Mail2Ticket
 
             string query = _searchTerm;
             string email = _SenderEmailAddress;
-            string url = $"http://localhost:8080/api/tickets/suggestions?q={Uri.EscapeDataString(query)}&mail={Uri.EscapeDataString(email)}";
+            //string url = $"http://localhost:8080/api/tickets/suggestions?q={Uri.EscapeDataString(query)}&mail={Uri.EscapeDataString(email)}";
+            string url = $"http://{_SearchServer}/api/tickets/suggestions?q={Uri.EscapeDataString(query)}&mail={Uri.EscapeDataString(email)}";
 
             HttpClient client = new HttpClient();
 
