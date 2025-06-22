@@ -213,6 +213,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <None Include="Go-Backend\.env">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Go-Backend\go.sum" />
     <None Include="Go-Backend\goserver.go" />
     <None Include="Mail2Ticket_TemporaryKey.pfx" />

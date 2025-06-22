@@ -10,6 +10,7 @@ import (
 	"os"
 
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/joho/godotenv"
 )
 
 var db *sql.DB
@@ -134,12 +135,23 @@ func suggestionsHandler(w http.ResponseWriter, r *http.Request) {
 func main() {
 	fmt.Printf("Starting server...\n")
 	var err error
+
+		// Load .env file
+	err = godotenv.Load(".env")
+	if err != nil {
+		log.Println("No .env file found or error loading it, proceeding with env vars")
+	} else {
+		log.Println(".env file found - using for DNS.")
+	}
+
+	// Get DSN from environment
 	dsn := os.Getenv("MYSQL_DSN")
 	if dsn == "" {
-		// dsn = "user:password@tcp(localhost:3306)/deinedb?parseTime=true"
-		fmt.Printf("Using default DSN\n")
+		fmt.Printf("No settings found. Using default DSN\n")
 		dsn = "otobo:P351fpLqcS0gosk4@tcp(ncl1.chaos.local:3306)/otobo?parseTime=true"
 	}
+
+
 	fmt.Printf("Connecting to database... \n")
 	db, err = sql.Open("mysql", dsn)
 	if err != nil {
