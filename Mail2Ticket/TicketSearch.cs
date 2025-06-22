@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using System.Windows;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
 namespace Mail2Ticket
 {
@@ -25,13 +28,46 @@ namespace Mail2Ticket
             // Zum Beispiel: Verbindung zu einer Datenbank herstellen, um Tickets zu suchen
             // oder eine API aufzurufen, um Tickets abzurufen.
         }
-        // Beispielmethode zum Suchen von Tickets
+
+        public async void getClientVersion(string _SearchServer, TicketDialog dialog)
+        {
+            string url = $"http://{_SearchServer}/api/getClientVersion";
+
+            HttpClient client = new HttpClient();
+            try { 
+                HttpResponseMessage response = await client.GetAsync(url);
+                response.EnsureSuccessStatusCode(); // throws if not 2xx
+                string json = await response.Content.ReadAsStringAsync();
+                var versionInfo = JsonSerializer.Deserialize<Dictionary<string, string>>(json);
+                //MessageBox.Show($"Client Version: {versionInfo["version"]}");
+                if (versionInfo != null && versionInfo.ContainsKey("clientVersion"))
+                {
+                    dialog.setStatusText($"Benötigte Client Version: {versionInfo["clientVersion"]}");
+                    //Console.WriteLine($"Client Version: {versionInfo["version"]}");
+                    dialog.checkClientVersion(versionInfo["clientVersion"]);
+                }
+                else
+                {
+                    dialog.setStatusText("Keine benötigte Client-Version gefunden.");
+                    dialog.checkClientVersion(null);
+                    //Console.WriteLine("Keine Client-Version gefunden.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+                dialog.setStatusText($"Fehler bei der Suche: {ex.Message}");
+                dialog.checkClientVersion(null);
+            }
+}
+
+
+        // Suche Tickets
         public async void  SearchTickets(string _SearchServer, string _searchTerm, string _SenderEmailAddress, TicketDialog dialog)
         {
             // Implementieren Sie hier die Logik zur Suche von Tickets basierend auf dem Suchbegriff
             // Dies könnte eine Datenbankabfrage oder eine API-Anfrage sein.
-
-            //dialog.setStatusText($"searching tickets...");
+            
 
             dialog.setStatusText("Suche...");
 

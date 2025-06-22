@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -50,7 +51,7 @@ namespace Mail2Ticket
 
             //Properties.Settings.Default.SearchServer = "localhost:8080";
             tbSearchServer.Text = Properties.Settings.Default.SearchServer;
-
+            _ticketSearch.getClientVersion(Properties.Settings.Default.SearchServer, this);
         }
 
         private void loadDestinationFolder()
@@ -117,6 +118,8 @@ namespace Mail2Ticket
 
         private void btnMail2Ticket_Click(object sender, RoutedEventArgs e)
         {
+
+
             if (string.IsNullOrWhiteSpace(Properties.Settings.Default.LastUsedFolderEntryID) ||
                 string.IsNullOrWhiteSpace(Properties.Settings.Default.LastUsedFolderStoreID))
             {
@@ -171,8 +174,19 @@ namespace Mail2Ticket
 
         public void setStatusText(string statusText)
         {
-            tbStatusText.Text += Environment.NewLine + statusText;
-            tbStatusText.ScrollToEnd(); // Scroll to the end to show the latest status
+            if (tbStatusText.Dispatcher.CheckAccess())
+            {
+                tbStatusText.Text += Environment.NewLine + statusText;
+                tbStatusText.ScrollToEnd();
+            }
+            else
+            {
+                tbStatusText.Dispatcher.Invoke(() =>
+                {
+                    tbStatusText.Text += Environment.NewLine + statusText;
+                    tbStatusText.ScrollToEnd();
+                });
+            }
         }
 
         // auto search on initialization
@@ -183,6 +197,8 @@ namespace Mail2Ticket
                 // You can customize this initial search string
                 _ticketSearch.SearchTickets(Properties.Settings.Default.SearchServer, tbSearchString.Text, _mailItem.SenderEmailAddress, this);
             }
+
+           
         }
         private void tbSearchString_TextChanged(object sender, KeyEventArgs e)
         {
@@ -271,6 +287,27 @@ namespace Mail2Ticket
             }
         }
 
-      
+        public void checkClientVersion(string _versionFromServer)
+        {
+            //MessageBox.Show(_versionFromServer, "Client Version", MessageBoxButton.OK, MessageBoxImage.Information);
+
+            if (_versionFromServer == null)
+            {
+                setStatusText("Keine Client-Version gefunden. Bitte überprüfen Sie die Verbindung zum Server.");
+                return;
+            }
+            else if (_versionFromServer == Assembly.GetExecutingAssembly().GetName().Version.ToString())
+            {
+                setStatusText("Client-Version ist aktuell: " + _versionFromServer);
+            }
+            else
+            {
+                
+                MessageBox.Show(@"Client-Version " + Assembly.GetExecutingAssembly().GetName().Version.ToString() + " ist veraltet. Bitte aktualisieren Sie den Client auf Version: " + _versionFromServer, "Client Version", MessageBoxButton.OK, MessageBoxImage.Warning);
+                Window.GetWindow(this)?.Close();
+
+            }
+        }
+
     }
 }
