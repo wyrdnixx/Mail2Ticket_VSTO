@@ -34,7 +34,7 @@
     <PublishUrl>Veröffentlichen\</PublishUrl>
     <InstallUrl />
     <TargetCulture>de</TargetCulture>
-    <ApplicationVersion>1.0.0.2</ApplicationVersion>
+    <ApplicationVersion>1.0.0.4</ApplicationVersion>
     <AutoIncrementApplicationRevision>true</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>7</UpdateInterval>
@@ -239,8 +239,12 @@
     <None Include="Go-Backend\.env">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Go-Backend\go.sum" />
-    <None Include="Go-Backend\goserver.go" />
+    <None Include="Go-Backend\go.sum">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Go-Backend\goserver.go">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Mail2Ticket_TemporaryKey.pfx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -273,7 +277,10 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Go-Backend\go.mod" />
+    <Content Include="Go-Backend\go.mod">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Go-Backend\goserver.exe" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
