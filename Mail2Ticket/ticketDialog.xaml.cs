@@ -25,6 +25,7 @@ namespace Mail2Ticket
 
         private Outlook.MailItem _mailItem;
         private TicketSearch _ticketSearch;
+        
 
         public TicketDialog()
         {
@@ -39,19 +40,25 @@ namespace Mail2Ticket
             tbEmailSubject.Text = _mailItem.Subject.ToString();
             tbSearchString.Text = _mailItem.SenderEmailAddress;
             _ticketSearch = new TicketSearch();
-
+            
 
         }
 
         internal void UpdateTicketSearchResults( List<TicketSearch.TicketSuggestion> suggestions)
         {
-            SuggestionsDataGrid.Items.Clear();
+
             
-            foreach (var suggestion in suggestions)
-            {
-             //   SuggestionsDataGrid.Items.Add(suggestion.tn + " - " + suggestion.title + " (" + suggestion.name + ")");
-            }
+            SuggestionsDataGrid.ItemsSource = null; // Reset necessary to refresh
             SuggestionsDataGrid.ItemsSource = suggestions;
+
+            //SuggestionsDataGrid.Items.Clear();
+
+            //foreach (var suggestion in suggestions)
+            //{
+            //SuggestionsDataGrid.Items.Add(suggestion.tn + " - " + suggestion.title + " (" + suggestion.name + ")");
+            //}
+
+            //SuggestionsDataGrid.ItemsSource = suggestions;
 
             // ToDO: Bug beim zweiten Suchen:
             // Der Vorgang ist während der Verwendung von "ItemsSource" ungültig.Verwenden Sie stattdessen "ItemsControl.ItemsSource", um auf Elemente zuzugreifen und diese zu ändern.
@@ -123,7 +130,7 @@ namespace Mail2Ticket
             if (e.Key == Key.Enter && tbSearchString.Text.Length > 2)
             {
                 
-                MessageBox.Show(    "Suche nach: " + tbSearchString.Text);
+                //MessageBox.Show(    "Suche nach: " + tbSearchString.Text);
 
 
                 // Hier können Sie die Logik zur Suche von Tickets basierend auf dem Suchbegriff implementieren
