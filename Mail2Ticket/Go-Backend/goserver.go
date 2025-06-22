@@ -17,6 +17,7 @@ var db *sql.DB
 
 type Ticket struct {
 	Type   string `json:"type"`	
+	Kunde string `json:"kunde"`	
 	Nummer string `json:"tn"`
 	Title  string `json:"title"`
 	
@@ -98,6 +99,7 @@ func suggestionsHandler(w http.ResponseWriter, r *http.Request) {
 	rows, err := db.Query(`
     SELECT 
         ticket_type.name AS type, 
+		customer_user.email as kunde,
         tn, 
         ticket.title
     FROM ticket 
@@ -122,7 +124,7 @@ func suggestionsHandler(w http.ResponseWriter, r *http.Request) {
 	var list []Ticket
 	for rows.Next() {
 		var t Ticket
-		if err := rows.Scan( &t.Type, &t.Nummer, &t.Title); err != nil {
+		if err := rows.Scan( &t.Type,&t.Kunde, &t.Nummer, &t.Title); err != nil {
 			continue
 		}
 		list = append(list, t)

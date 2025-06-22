@@ -14,6 +14,7 @@ namespace Mail2Ticket
         public partial class TicketSuggestion
         {
             public string type { get; set; }
+            public string kunde { get; set; }
             public string tn { get; set; }
             public string title { get; set; }
             

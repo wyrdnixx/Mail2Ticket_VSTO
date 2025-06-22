@@ -26,6 +26,7 @@
                 <DataGrid.Columns>
                     <!-- Selectable TN field (as Button or TextBox) -->
                     <DataGridTextColumn Header="Type" Binding="{Binding type}" />
+                    <DataGridTextColumn Header="Kunde"  Binding="{Binding kunde}" />
                     <DataGridTemplateColumn Header="TN">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
