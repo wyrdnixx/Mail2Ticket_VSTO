@@ -53,15 +53,16 @@ namespace Mail2Ticket
                 if (suggestions == null || suggestions.Count == 0)
                 {
                     dialog.setStatusText("Keine Tickets gefunden.");
-                    Console.WriteLine("Keine Tickets gefunden.");
+                    //Console.WriteLine("Keine Tickets gefunden.");
                     return;
                 } else
                 {
-                    foreach (var suggestion in suggestions)
-                    {
-                        Console.WriteLine($"Ticket: {suggestion.tn}, Title: {suggestion.title}, Name: {suggestion.type}");
+                    //foreach (var suggestion in suggestions)
+                    //{
+                    //    Console.WriteLine($"Ticket: {suggestion.tn}, Title: {suggestion.title}, Name: {suggestion.type}");
 
-                    }
+                    //}
+                    dialog.setStatusText("Tickets gefunden: "+ suggestions.Count);
                     dialog.UpdateTicketSearchResults(suggestions);
                 }
                     

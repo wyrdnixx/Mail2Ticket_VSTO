@@ -172,6 +172,7 @@ namespace Mail2Ticket
         public void setStatusText(string statusText)
         {
             tbStatusText.Text += Environment.NewLine + statusText;
+            tbStatusText.ScrollToEnd(); // Scroll to the end to show the latest status
         }
 
         // auto search on initialization
