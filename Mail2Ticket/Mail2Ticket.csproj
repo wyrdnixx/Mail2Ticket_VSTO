@@ -236,6 +236,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <None Include="Go-Backend\_example_.env">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Go-Backend\.env">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
