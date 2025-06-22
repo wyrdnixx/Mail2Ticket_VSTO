@@ -20,8 +20,8 @@
 
         <Button x:Name="btnConfig" Content="Config" HorizontalAlignment="Left" Margin="901,577,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.287,0.017" Width="89" Click="btnConfig_Click"/>
         <Grid Margin="10,122,10,155">
-            <DataGrid x:Name="SuggestionsDataGrid" AutoGenerateColumns="False" Margin="10,0,10,0"
-                  SelectionMode="Single" IsReadOnly="True"           SelectionChanged="SuggestionsDataGrid_SelectionChanged" Height="382" VerticalAlignment="Center"
+            <DataGrid x:Name="SuggestionsDataGrid" AutoGenerateColumns="False" Margin="10,20,10,0"
+                  SelectionMode="Single" IsReadOnly="True"           SelectionChanged="SuggestionsDataGrid_SelectionChanged" 
 >
                 <DataGrid.Columns>
                     <!-- Selectable TN field (as Button or TextBox) -->
