@@ -11,15 +11,17 @@
         <Label Content="Betreff" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
         <TextBox x:Name="tbEmailSubject" HorizontalAlignment="Left" Margin="102,14,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="888"/>
         <Label Content="TicketNr." HorizontalAlignment="Left" Margin="10,546,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="tbTicketNumber" HorizontalAlignment="Left" Margin="102,550,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="888"/>
+        <TextBox x:Name="tbTicketNumber" HorizontalAlignment="Left" Margin="67,550,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="923"/>
         <Button x:Name="btnMail2Ticket" Content="Mail2Ticket" HorizontalAlignment="Left" Margin="10,577,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.287,0.017" Width="89" Click="btnMail2Ticket_Click"/>
         <Label Content="Suche:" HorizontalAlignment="Left" Margin="10,47,0,0" VerticalAlignment="Top"/>
         <TextBox x:Name="tbSearchString" HorizontalAlignment="Left" Margin="102,51,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="444" KeyDown="tbSearchString_TextChanged" />
         <Label x:Name="lblStatusText" Content="Status:" HorizontalAlignment="Left" Margin="566,47,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="tbStatusText" HorizontalAlignment="Left" Margin="616,37,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="374" Height="85" VerticalScrollBarVisibility="Auto" IsReadOnly="True"  />
-        <Grid>
-            <DataGrid x:Name="SuggestionsDataGrid" AutoGenerateColumns="False" Margin="105,124,10,131"
-                  SelectionMode="Single" IsReadOnly="True"           SelectionChanged="SuggestionsDataGrid_SelectionChanged"
+        <TextBox x:Name="tbStatusText" HorizontalAlignment="Left" Margin="616,37,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="374" Height="85" VerticalScrollBarVisibility="Auto" IsReadOnly="True"  />
+
+        <Button x:Name="btnConfig" Content="Config" HorizontalAlignment="Left" Margin="901,577,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.287,0.017" Width="89" Click="btnConfig_Click"/>
+        <Grid Margin="10,122,10,109">
+            <DataGrid x:Name="SuggestionsDataGrid" AutoGenerateColumns="False" Margin="10,0,10,0"
+                  SelectionMode="Single" IsReadOnly="True"           SelectionChanged="SuggestionsDataGrid_SelectionChanged" Height="383" VerticalAlignment="Center"
 >
                 <DataGrid.Columns>
                     <!-- Selectable TN field (as Button or TextBox) -->
@@ -37,5 +39,8 @@
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>
+        <Label x:Name="lblDestinationFolder" Content="Zielordner: " HorizontalAlignment="Left" Margin="670,569,0,0" VerticalAlignment="Top"/>
     </Grid>
+
+
 </UserControl>

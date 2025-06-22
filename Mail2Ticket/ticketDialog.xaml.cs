@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Xml.Linq;
+using Microsoft.Office.Interop.Outlook;
+using Exception = System.Exception;
 using Outlook = Microsoft.Office.Interop.Outlook;
 
 namespace Mail2Ticket
@@ -25,7 +27,8 @@ namespace Mail2Ticket
 
         private Outlook.MailItem _mailItem;
         private TicketSearch _ticketSearch;
-        
+        private Outlook.MAPIFolder _selectedFolder;
+
 
         public TicketDialog()
         {
@@ -40,8 +43,39 @@ namespace Mail2Ticket
             tbEmailSubject.Text = _mailItem.Subject.ToString();
             tbSearchString.Text = _mailItem.SenderEmailAddress;
             _ticketSearch = new TicketSearch();
-            
+            loadDestinationFolder();
 
+
+
+        }
+
+        private void loadDestinationFolder()
+        {
+            // Show saved folder path, if available
+            if (!string.IsNullOrWhiteSpace(Properties.Settings.Default.LastUsedFolderEntryID))
+            {
+                try
+                {
+                    Outlook.NameSpace session = new Outlook.Application().Session;
+                    var folder = session.GetFolderFromID(
+                        Properties.Settings.Default.LastUsedFolderEntryID,
+                        Properties.Settings.Default.LastUsedFolderStoreID);
+
+                    if (folder != null)
+                    {
+                        //setStatusText("Zielordner: " + folder.FolderPath);
+                        lblDestinationFolder.Content = "Zielordner: " + folder.FolderPath;
+                    }
+                }
+                catch
+                {
+                    //setStatusText("Zielordner nicht festgelegt...");
+                    lblDestinationFolder.Content = "Zielordner fehler..." ;
+                }
+            } else
+            {
+                lblDestinationFolder.Content = "Zielordner nicht festgelegt...";
+            }
         }
 
         internal void UpdateTicketSearchResults( List<TicketSearch.TicketSuggestion> suggestions)
@@ -79,35 +113,55 @@ namespace Mail2Ticket
 
         private void btnMail2Ticket_Click(object sender, RoutedEventArgs e)
         {
-            if (_mailItem != null)
+            if (string.IsNullOrWhiteSpace(Properties.Settings.Default.LastUsedFolderEntryID) ||
+                string.IsNullOrWhiteSpace(Properties.Settings.Default.LastUsedFolderStoreID))
             {
-                try
-                {
-                    // Kopie der Mail erstellen
-                    Outlook.MailItem copy = (Outlook.MailItem)_mailItem.Copy();
-
-                    //  Ticketnummer aus TextBox verwenden, falls vorhanden
-                    copy.Subject = "[MCB#" + tbTicketNumber.Text + "] " + tbEmailSubject.Text; // Optional: Betreff anpassen
-
-                    // In den Entwürfe-Ordner verschieben
-                    Outlook.MAPIFolder drafts = _mailItem.Application.Session.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderDrafts);
-                    copy.Move(drafts);
-
-
-
-                    //MessageBox.Show("Kopie der E-Mail wurde im Ordner 'Entwürfe' erstellt.");
-                    // Optional: Dialog schließen oder weitere Aktionen durchführen 
-                    Window.GetWindow(this)?.Close();
-
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Fehler beim Kopieren: " + ex.Message);
-                }
+                MessageBox.Show("Bitte zuerst Zielordner festlegen...");
+                return;
             }
-            else
+
+            if (_mailItem == null)
             {
                 MessageBox.Show("Kein MailItem übergeben.");
+                return;
+            }
+
+            try
+            {
+                Outlook.MailItem copy = (Outlook.MailItem)_mailItem.Copy();
+                copy.Subject = "[MCB#" + tbTicketNumber.Text + "] " + tbEmailSubject.Text;
+
+                Outlook.MAPIFolder targetFolder = GetFolderFromEntryID(
+                    Properties.Settings.Default.LastUsedFolderEntryID,
+                    Properties.Settings.Default.LastUsedFolderStoreID);
+
+                if (targetFolder != null)
+                {
+                    copy.Move(targetFolder);
+                    Window.GetWindow(this)?.Close();
+                }
+                else
+                {
+                    MessageBox.Show("Zielordner konnte nicht gefunden werden.");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Fehler beim Kopieren: " + ex.Message);
+            }
+        }
+
+
+        private Outlook.MAPIFolder GetFolderFromEntryID(string entryID, string storeID)
+        {
+            try
+            {
+                Outlook.NameSpace session = _mailItem.Application.Session;
+                return session.GetFolderFromID(entryID, storeID);
+            }
+            catch
+            {
+                return null;
             }
         }
 
@@ -137,6 +191,43 @@ namespace Mail2Ticket
                 // Zum Beispiel: Verbindung zu einer Datenbank herstellen, um Tickets zu suchen
                 // oder eine API aufzurufen, um Tickets abzurufen.
                 _ticketSearch.SearchTickets(tbSearchString.Text,_mailItem.SenderEmailAddress, this);
+            }
+        }
+
+        private void btnConfig_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Outlook.Application outlookApp = new Outlook.Application();
+                Outlook.NameSpace outlookNamespace = outlookApp.GetNamespace("MAPI");
+
+                Outlook.MAPIFolder folder = outlookNamespace.PickFolder();
+
+                if (folder != null)
+                {
+                    _selectedFolder = folder;
+                    //MessageBox.Show("Ordner ausgewählt: " + folder.Name + " (" + folder.FolderPath + ")", "Konfiguration", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                    //Speichern in Konfigdatei
+                    //Properties.Settings.Default.LastUsedFolder = folder.FolderPath;
+                    
+
+                    //Properties.Settings.Default.LastUsedFolder = _selectedFolder.FolderPath;
+                    //Properties.Settings.Default.Save();
+
+                    Properties.Settings.Default.LastUsedFolderEntryID = _selectedFolder.EntryID;
+                    Properties.Settings.Default.LastUsedFolderStoreID = _selectedFolder.StoreID;
+                    Properties.Settings.Default.Save();
+
+
+
+                    setStatusText($"Ordner ausgewählt: {folder.Name} ({folder.FolderPath})");
+                    loadDestinationFolder(); // Update the displayed folder path
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Fehler beim Öffnen des Dialogs: " + ex.Message);
             }
         }
     }

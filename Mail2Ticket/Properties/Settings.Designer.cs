@@ -22,5 +22,9 @@ namespace Mail2Ticket.Properties {
                 return defaultInstance;
             }
         }
+
+        
+        public string LastUsedFolderEntryID { get; internal set; }
+        public string LastUsedFolderStoreID { get; internal set; }
     }
 }
