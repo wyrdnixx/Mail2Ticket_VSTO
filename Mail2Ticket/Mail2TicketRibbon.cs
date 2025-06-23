@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Forms;
@@ -13,12 +15,32 @@ namespace Mail2Ticket
     [ComVisible(true)]
     public class Mail2TicketRibbon : Office.IRibbonExtensibility
     {
-        public string GetCustomUI(string ribbonID)
+        public string GetCustomUI__OLD(string ribbonID)
         {
             return System.IO.File.ReadAllText(
                 System.IO.Path.Combine(
                     AppDomain.CurrentDomain.BaseDirectory, "Mail2TicketRibbon.xml"));
         }
+
+        public string GetCustomUI(string ribbonID)
+        {
+            return GetResourceText("Mail2Ticket.Mail2TicketRibbon.xml");
+        }
+
+        private string GetResourceText(string resourceName)
+        {
+            var asm = Assembly.GetExecutingAssembly();
+            using (var stream = asm.GetManifestResourceStream(resourceName))
+            {
+                if (stream == null) return null;
+                using (var reader = new StreamReader(stream))
+                {
+                    return reader.ReadToEnd();
+                }
+            }
+        }
+
+
 
         public void OnMail2TicketClicked(Office.IRibbonControl control)
         {
