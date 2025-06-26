@@ -45,7 +45,10 @@ namespace Mail2Ticket
 
             _mailItem = mailItem;
             tbEmailSubject.Text = _mailItem.Subject.ToString();
-            tbSearchString.Text = _mailItem.SenderEmailAddress;
+            //tbSearchString.Text = _mailItem.SenderEmailAddress;
+            //tbSearchString.Text = _mailItem.Sender.Address; // Setzt die E-Mail-Adresse des Absenders in die TextBox
+            tbSearchString.Text = GetSmtpAddress(_mailItem);// Setzt die E-Mail-Adresse des Absenders in die TextBox 
+
             _ticketSearch = new TicketSearch();
             loadDestinationFolder();
 
@@ -54,6 +57,31 @@ namespace Mail2Ticket
             _ticketSearch.getClientVersion(Properties.Settings.Default.SearchServer, this);
         }
 
+
+        public string GetSmtpAddress(Outlook.MailItem mail) // get the real email address of the sender if exchange user - without it will return the x500 address
+        {
+            Outlook.AddressEntry sender = mail.Sender;
+
+            if (sender != null)
+            {
+                if (sender.AddressEntryUserType == Outlook.OlAddressEntryUserType.olExchangeUserAddressEntry ||
+                    sender.AddressEntryUserType == Outlook.OlAddressEntryUserType.olExchangeRemoteUserAddressEntry)
+                {
+                    // Sender is an Exchange user
+                    Outlook.ExchangeUser exchUser = sender.GetExchangeUser();
+                    if (exchUser != null)
+                    {
+                        return exchUser.PrimarySmtpAddress;
+                    }
+                }
+                else
+                {
+                    // Sender is probably SMTP (external)
+                    return sender.Address;
+                }
+            }
+            return null;
+        }
         private void loadDestinationFolder()
         {
             // Show saved folder path, if available
@@ -136,7 +164,23 @@ namespace Mail2Ticket
             try
             {
                 Outlook.MailItem copy = (Outlook.MailItem)_mailItem.Copy();
-                copy.Subject = "[MCB#" + tbTicketNumber.Text + "] " + tbEmailSubject.Text;
+
+                if (cbNewTicket.IsChecked == true)
+                {
+                    // Wenn "Neues Ticket" ausgewählt ist, Ticketnummer leeren
+                    tbTicketNumber.Text = string.Empty;
+                    
+                } else 
+                {
+                    if (string.IsNullOrWhiteSpace(tbTicketNumber.Text))
+                    {
+                        MessageBox.Show("Bitte geben Sie eine Ticketnummer ein oder wählen Sie 'Neues Ticket' aus.");
+                        return;
+                    }
+                    // Wenn "Neues Ticket" nicht ausgewählt ist, Ticketnummer setzen
+                    copy.Subject = "[MCB#" + tbTicketNumber.Text + "] " + tbEmailSubject.Text;
+                }
+                    
 
                 Outlook.MAPIFolder targetFolder = GetFolderFromEntryID(
                     Properties.Settings.Default.LastUsedFolderEntryID,
@@ -309,5 +353,19 @@ namespace Mail2Ticket
             }
         }
 
+        private void cbNewTicket_Checked(object sender, RoutedEventArgs e)
+        {
+            if (cbNewTicket.IsChecked == true)
+            {
+                // Wenn das Kontrollkästchen aktiviert ist, Ticketnummer leeren
+                tbTicketNumber.Text = string.Empty;
+                tbTicketNumber.IsEnabled = false; // Deaktivieren der TextBox
+            }
+            else
+            {
+                // Wenn das Kontrollkästchen deaktiviert ist, Ticketnummer aktivieren
+                tbTicketNumber.IsEnabled = true;
+            }
+        }
     }
 }

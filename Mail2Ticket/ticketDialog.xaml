@@ -43,6 +43,8 @@
         <Label x:Name="lblDestinationFolder" Content="Zielordner: " HorizontalAlignment="Left" Margin="670,569,0,0" VerticalAlignment="Top"/>
         <Label x:Name="lblSearchServern" Content="Suchserver: " HorizontalAlignment="Left" Margin="670,600,0,0" VerticalAlignment="Top"/>
         <TextBox x:Name="tbSearchServer" HorizontalAlignment="Left" Margin="738,604,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="252" KeyDown="tbSearchServer_TextChanged"/>
+        <CheckBox x:Name="cbNewTicket" Content="Neues Ticket erstellen" HorizontalAlignment="Left" Margin="132,579,0,0" VerticalAlignment="Top" Width="229" Checked="cbNewTicket_Checked"/>
+        <Label x:Name="lblVersionInfo" Content="VersionInfo" HorizontalAlignment="Left" Margin="738,626,0,0" VerticalAlignment="Top"/>
     </Grid>
 
 

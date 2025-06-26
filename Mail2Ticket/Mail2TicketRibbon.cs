@@ -55,7 +55,7 @@ namespace Mail2Ticket
                 string emailSuject = mail.Subject;
                 
                 dialog.StartMail2Ticket(mail);
-               
+               dialog.lblVersionInfo.Content = $"Mail2Ticket Version: {Assembly.GetExecutingAssembly().GetName().Version}";
 
                 var window = new Window
                 {
