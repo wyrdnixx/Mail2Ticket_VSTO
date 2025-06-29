@@ -19,6 +19,7 @@ using Microsoft.Office.Interop.Outlook;
 using Exception = System.Exception;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using Outlook = Microsoft.Office.Interop.Outlook;
+using System.Runtime.InteropServices;
 
 namespace Mail2Ticket
 {
@@ -42,6 +43,11 @@ namespace Mail2Ticket
         // Übergibt das MailItem-Objekt und setzt den Button-Text
         public void StartMail2Ticket(Outlook.MailItem mailItem)
         {
+            if (mailItem == null)
+            {
+                MessageBox.Show("Kein MailItem übergeben.", "Fehler", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
 
             _mailItem = mailItem;
             tbEmailSubject.Text = _mailItem.Subject.ToString();
@@ -84,30 +90,34 @@ namespace Mail2Ticket
         }
         private void loadDestinationFolder()
         {
-            // Show saved folder path, if available
             if (!string.IsNullOrWhiteSpace(Properties.Settings.Default.LastUsedFolderEntryID))
             {
+                Outlook.Application outlookApp = null;
+                Outlook.NameSpace session = null;
+                Outlook.MAPIFolder folder = null;
                 try
                 {
-                    Outlook.NameSpace session = new Outlook.Application().Session;
-                    var folder = session.GetFolderFromID(
+                    outlookApp = new Outlook.Application();
+                    session = outlookApp.Session;
+                    folder = session.GetFolderFromID(
                         Properties.Settings.Default.LastUsedFolderEntryID,
                         Properties.Settings.Default.LastUsedFolderStoreID);
 
                     if (folder != null)
                     {
-                        //setStatusText("Zielordner: " + folder.FolderPath);
                         lblDestinationFolder.Content = "Zielordner: " + folder.FolderPath;
                     }
                 }
-                catch
+                catch (Exception ex)
                 {
-                    //setStatusText("Zielordner nicht festgelegt...");
-                    lblDestinationFolder.Content = "Zielordner fehler..." ;
+                    MessageBox.Show("Fehler beim Laden des Zielordners: " + ex.Message);
                 }
-            } else
-            {
-                lblDestinationFolder.Content = "Zielordner nicht festgelegt...";
+                finally
+                {
+                    if (folder != null) Marshal.ReleaseComObject(folder);
+                    if (session != null) Marshal.ReleaseComObject(session);
+                    if (outlookApp != null) Marshal.ReleaseComObject(outlookApp);
+                }
             }
         }
 
