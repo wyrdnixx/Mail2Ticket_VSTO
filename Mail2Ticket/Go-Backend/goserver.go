@@ -100,6 +100,7 @@ func suggestionsHandler(w http.ResponseWriter, r *http.Request) {
 
 	// only use this prepare method if no user input is used in the query. vulnerable to sql injection otherwise
 	
+	/*
 	query := fmt.Sprintf(`
 SELECT 
     ticket_type.name AS type, 
@@ -117,33 +118,31 @@ WHERE
         OR customer_user.email LIKE "%%%s%%"
 )    
 LIMIT 20;`, ticketstates, searchTerm, searchTerm, mail)
+*/
 
-
+	query := fmt.Sprintf(`
+SELECT 
+    ticket_type.name AS type, 
+    customer_user_id kunde,
+    tn, 
+    ticket.title
+FROM ticket 
+LEFT JOIN ticket_type ON ticket.type_id = ticket_type.id 
+LEFT JOIN ticket_state ON ticket.ticket_state_id = ticket_state.id
+WHERE 
+    ticket.ticket_state_id IN (%s) AND (
+        tn LIKE "%%%s%%"
+        OR ticket.title LIKE "%%%s%%"    
+        OR customer_user_id  LIKE "%%%s%%"
+)    
+LIMIT 20;`, ticketstates, searchTerm, searchTerm, mail)
 
 	log.Printf("Executing query:\n%s", query)
 
 	rows, err := db.Query(query)
 	
 
-	/*
-	 rows, err := db.Query(`
-    SELECT 
-        ticket_type.name AS type, 
-		customer_user.email as kunde,
-        tn, 
-        ticket.title
-    FROM ticket 
-    LEFT JOIN ticket_type ON ticket.type_id = ticket_type.id 
-    LEFT JOIN customer_user ON ticket.customer_user_id = customer_user.login
-    LEFT JOIN ticket_state ON ticket.ticket_state_id = ticket_state.id
-    WHERE 
-	ticket.ticket_state_id IN (?) AND (
-			tn LIKE ? 
-			OR ticket.title LIKE ?		
-			OR customer_user.email like ?
-    )    
-    LIMIT 20;`, ticketstates ,searchTerm, searchTerm, mail)
-	*/
+
 
 	if err != nil {
 		http.Error(w, "DB-Fehler", http.StatusInternalServerError)
