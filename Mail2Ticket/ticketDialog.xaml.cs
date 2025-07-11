@@ -187,6 +187,7 @@ namespace Mail2Ticket
                         MessageBox.Show("Bitte geben Sie eine Ticketnummer ein oder wählen Sie 'Neues Ticket' aus.");
                         return;
                     }
+                    tbTicketNumber.Text = tbTicketNumber.Text.Trim(); // Entfernt führende und nachfolgende Leerzeichen
                     // Wenn "Neues Ticket" nicht ausgewählt ist, Ticketnummer setzen
                     copy.Subject = "[MCB#" + tbTicketNumber.Text + "] " + tbEmailSubject.Text;
                 }
