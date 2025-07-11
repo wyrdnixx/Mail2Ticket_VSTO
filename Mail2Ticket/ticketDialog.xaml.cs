@@ -179,7 +179,7 @@ namespace Mail2Ticket
                 {
                     // Wenn "Neues Ticket" ausgewählt ist, Ticketnummer leeren
                     tbTicketNumber.Text = string.Empty;
-                    
+                    copy.Subject = tbEmailSubject.Text;
                 } else 
                 {
                     if (string.IsNullOrWhiteSpace(tbTicketNumber.Text))
@@ -189,6 +189,7 @@ namespace Mail2Ticket
                     }
                     tbTicketNumber.Text = tbTicketNumber.Text.Trim(); // Entfernt führende und nachfolgende Leerzeichen
                     // Wenn "Neues Ticket" nicht ausgewählt ist, Ticketnummer setzen
+                   
                     copy.Subject = "[MCB#" + tbTicketNumber.Text + "] " + tbEmailSubject.Text;
                 }
                     
